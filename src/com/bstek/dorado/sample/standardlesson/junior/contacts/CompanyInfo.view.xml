@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="datasetCompany">
+      <Property name="dataType">[SICompany]</Property>
+      <Property name="dataProvider">companyService#getCompany</Property>
+    </DataSet>
+    <AutoForm id="autoformCompany">
+      <Property name="dataSet">datasetCompany</Property>
+      <Property name="cols">*</Property>
+      <Property name="width">550</Property>
+      <Property name="labelSeparator">:</Property>
+      <Property name="readOnly">true</Property>
+      <AutoFormElement>
+        <Property name="name">companyName</Property>
+        <Property name="property">companyName</Property>
+        <Property name="labelWidth">80</Property>
+        <Property name="label">公司名称</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">fullName</Property>
+        <Property name="property">fullName</Property>
+        <Property name="label">公司全称</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">web</Property>
+        <Property name="property">web</Property>
+        <Property name="label">公司网址</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">address</Property>
+        <Property name="property">address</Property>
+        <Property name="label">公司地址</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">postcode</Property>
+        <Property name="property">postcode</Property>
+        <Property name="label">邮政编码</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">phone</Property>
+        <Property name="property">phone</Property>
+        <Property name="label">手机号码</Property>
+        <Editor/>
+      </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">email</Property>
+        <Property name="property">email</Property>
+        <Property name="label">电子邮件</Property>
+        <Editor/>
+      </AutoFormElement>
+    </AutoForm>
+  </View>
+</ViewConfig>
