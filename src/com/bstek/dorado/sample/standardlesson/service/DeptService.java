@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.annotation.Resource;
 
+import org.hibernate.util.StringHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,4 +58,20 @@ public class DeptService {
 		}
 	}
 	
+	@DataProvider
+	public Collection<SlDept> getAll(){
+		return slDeptDao.getAll();
+	}
+	
+	@DataProvider
+	public Collection<SlDept> getDeptByDeptName(String deptName){
+		String hql = "from SlDept where deptName like :deptName";
+		HashMap param = new HashMap();
+		if(StringHelper.isNotEmpty(deptName)){
+				param.put("deptName", "%"+deptName+"%");
+				return slDeptDao.find(hql, param);
+		}else{
+			return slDeptDao.getAll();
+		}
+	}	
 }
