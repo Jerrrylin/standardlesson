@@ -45,6 +45,9 @@
         </Property>
         <Property name="label">婚否</Property>
       </PropertyDef>
+      <PropertyDef name="operation">
+        <Property name="submittable">false</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="SlDept" parent="global:SlDept">
       <Property name="defaultDisplayProperty">deptName</Property>
@@ -145,9 +148,77 @@ dialogEdit.show();</ClientEvent>
       </ToolBarButton>
     </ToolBar>
     <DataGrid id="datagridEmployee">
+      <ClientEvent name="onCreate">var OperationCellRenderer = $extend(dorado.widget.grid.SubControlCellRenderer, {&#xD;
+    createSubControl: function(arg) {&#xD;
+        //创建单元格内部的DOM元素&#xD;
+		if (arg.data.rowType)&#xD;
+			return null;&#xD;
+		//返回按钮对象并为按钮对象绑定onClick事件&#xD;
+		return new dorado.widget.Button({&#xD;
+		onClick : function(self) {&#xD;
+		//获取当前员工对象&#xD;
+		var entity = arg.data;&#xD;
+		//在点击重置按钮后，将当前员工的密码设置为123456并保存&#xD;
+		entity.set(&quot;password&quot;,&quot;123456&quot;);&#xD;
+		view.get(&quot;#updateactionSave&quot;).execute(function(){&#xD;
+		dorado.widget.NotifyTipManager.notify(entity.get(&quot;employeeName&quot;)+ &quot;的密码已经重置!&quot;);&#xD;
+		})&#xD;
+		}&#xD;
+		});&#xD;
+	&#xD;
+		&#xD;
+    }, &#xD;
+    refreshSubControl: function(button, arg) {&#xD;
+        //当渲染单元格时触发，在这个事件中可以通过arg.data获取当前的实体对象&#xD;
+    	var password = arg.data.get(&quot;password&quot;);&#xD;
+		//设置按钮的标题，假如员工密码为默认值则按钮显示未修改密码，若员工密码已经修改则按钮显示重置密码&#xD;
+		//如果员工密码为默认则按钮不可用&#xD;
+		button.set({&#xD;
+			caption : (password != &quot;123456&quot;) ? &quot;重置密码&quot; : &quot;未修改密码&quot;,&#xD;
+			disabled : (password == &quot;123456&quot;)&#xD;
+		});&#xD;
+	}&#xD;
+});&#xD;
+ &#xD;
+self.set(&quot;&amp;operation.renderer&quot;, new OperationCellRenderer());//最后设置名称为operation的DataColumn的渲染器为自定义的OperationCellRenderer&#xD;
+</ClientEvent>
+      <ClientEvent name="onRenderRow">var degree = arg.data.get(&quot;degree&quot;);&#xD;
+arg.dom.style.background = (degree=='博士'||degree=='博士后')?&quot;#d5e4fc&quot;:&quot;&quot;;&#xD;
+</ClientEvent>
       <Property name="dataSet">datasetEmployee</Property>
-      <Property name="height">350</Property>
       <Property name="readOnly">true</Property>
+      <Property name="dynaRowHeight">true</Property>
+      <DataColumn>
+        <Property name="name">operation</Property>
+        <Property name="caption">重置密码</Property>
+        <Property name="align">center</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <ClientEvent name="onRenderCell">if(arg.data.get(&quot;image&quot;)){&#xD;
+     $(arg.dom).empty().xCreate(&#xD;
+     {&#xD;
+          tagName : &quot;IMG&quot;,&#xD;
+          src : $url(&quot;>images/photo/&quot;+ arg.data.get(&quot;image&quot;)),&#xD;
+          style : &quot;width: 20px; height: 20px; margin: 2px&quot;&#xD;
+});&#xD;
+//初始化Tip控件，在控件中显示图片&#xD;
+     dorado.TipManager.initTip(arg.dom.parentNode, {&#xD;
+          content : {&#xD;
+          tagName : &quot;IMG&quot;,&#xD;
+          src : $url(&quot;>images/photo/&quot;+ arg.data.get(&quot;image&quot;)),&#xD;
+          style : &quot;width: 128px; height: 128px; margin: 8px&quot;&#xD;
+     },&#xD;
+     arrowDirection : &quot;top&quot;,&#xD;
+     arrowAlign : &quot;left&quot;&#xD;
+     });&#xD;
+}&#xD;
+</ClientEvent>
+        <Property name="name">image</Property>
+        <Property name="property">image</Property>
+        <Property name="align">center</Property>
+        <Editor/>
+      </DataColumn>
       <DataColumn name="employeeName">
         <Property name="property">employeeName</Property>
       </DataColumn>
@@ -158,6 +229,10 @@ dialogEdit.show();</ClientEvent>
         <Property name="property">employeeCode</Property>
       </DataColumn>
       <DataColumn name="email">
+        <ClientEvent name="onRenderCell">var email = arg.data.get(&quot;email&quot;);&#xD;
+arg.dom.innerHTML = &quot;&lt;a href='mailto:&quot;+email+&quot;'>&quot;+email+&quot;&lt;/a>&quot;;&#xD;
+//console.log(email);&#xD;
+</ClientEvent>
         <Property name="property">email</Property>
       </DataColumn>
       <DataColumn name="phone">
@@ -168,6 +243,11 @@ dialogEdit.show();</ClientEvent>
       </DataColumn>
       <DataColumn name="position">
         <Property name="property">position</Property>
+      </DataColumn>
+      <DataColumn>
+        <Property name="name">degree</Property>
+        <Property name="property">degree</Property>
+        <Editor/>
       </DataColumn>
     </DataGrid>
     <UpdateAction id="updateactionSave">

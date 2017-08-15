@@ -64,10 +64,6 @@
       <Property name="readOnly">false</Property>
       <Property name="pageSize">15</Property>
     </DataSet>
-    <DataSet id="datasetDept">
-      <Property name="dataType">[SlDept]</Property>
-      <Property name="dataProvider">deptService#getTopDept</Property>
-    </DataSet>
     <AutoForm id="autoformCondition">
       <Property name="createPrivateDataSet">true</Property>
       <Property name="cols">400,*,*</Property>
@@ -321,23 +317,6 @@ dialogEdit.hide();</ClientEvent>
       <Property name="autoOpen">true</Property>
       <Property name="editable">false</Property>
     </DataSetDropDown>
-    <CustomDropDown id="customDropDownCommonDept">
-      <Property name="width">200</Property>
-      <Property name="height">200</Property>
-      <DataTree id="datatreeDept">
-        <ClientEvent name="onDataRowClick">var dropDown = dorado.widget.DropDown.findDropDown(self);&#xD;
-var node = self.get(&quot;currentNode&quot;);&#xD;
-dropDown.close(node.get(&quot;data&quot;));</ClientEvent>
-        <Property name="dataSet">datasetDept</Property>
-        <BindingConfigs>
-          <BindingConfig>
-            <Property name="labelProperty">deptName</Property>
-            <Property name="name">dept</Property>
-            <Property name="recursive">true</Property>
-            <Property name="childrenProperty">slDeptSet</Property>
-          </BindingConfig>
-        </BindingConfigs>
-      </DataTree>
-    </CustomDropDown>
+    <Import src="com.bstek.dorado.sample.standardlesson.middle.common.CommonDropDown#dropdownGroupStart"/>
   </View>
 </ViewConfig>
